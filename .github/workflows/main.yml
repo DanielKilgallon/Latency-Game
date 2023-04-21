@@ -14,8 +14,8 @@ jobs:
         id: build
         uses: manleydev/build-godot-action@v1.4.1
         with:
-          name: example
-          preset: HTML
+          name: Latency
+          preset: HTML5
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
