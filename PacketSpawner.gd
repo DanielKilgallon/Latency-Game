@@ -15,5 +15,5 @@ func _on_Timer_timeout():
 	packet_obj.position = position
 	get_parent().add_child(packet_obj)
 	var timer_time = $Timer.get_wait_time()
-	if timer_time > .5:
+	if timer_time > 1:
 		$Timer.set_wait_time(timer_time - timer_increase_ratio)

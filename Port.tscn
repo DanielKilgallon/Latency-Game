@@ -17,4 +17,10 @@ shape = SubResource( 1 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -9.0
+margin_top = -15.0
+margin_right = 9.0
+margin_bottom = -10.0
+
 [connection signal="body_entered" from="." to="." method="_on_Port_body_entered"]

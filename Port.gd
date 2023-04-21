@@ -8,4 +8,4 @@ func _ready():
 
 func _on_Port_body_entered(body):
 	if body.is_in_group("Packets") and body.packet_type == self.port_type:
-		print('match?')
+		body.destroy()
