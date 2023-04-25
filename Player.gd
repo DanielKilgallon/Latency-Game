@@ -1,16 +1,14 @@
 extends KinematicBody2D
 
 const jumpvelocity: int = 220
-const gravityscale: int = 8
-var walkspeed: int = 100
+var walkspeed: int = 150
 const FLOOR: Vector2 = Vector2(0, -1)
-
 var velocity: Vector2 = Vector2()
 var can_jump: bool = false
 var coyoteCount: int = 0
 var rotated: bool = false
 
-var localInteractable
+var localInteractables = []
 var heldPackets = []
 
 func _input(_event):
@@ -19,7 +17,7 @@ func _input(_event):
 
 func _physics_process(_delta):
 	velocity.x = 0
-	velocity.y += gravityscale
+	velocity.y += float(ProjectSettings.get_setting("physics/2d/default_gravity") / 10)
 
 	if Input.is_action_pressed("ui_right"):
 		velocity.x = walkspeed
@@ -44,13 +42,14 @@ func _physics_process(_delta):
 		can_jump = false
 		velocity.y = -jumpvelocity
 		$AnimatedSprite.play("Jump")
+		$Jump.play()
 
 	var animation_name = $AnimatedSprite.get_animation()
 	if animation_name == "Jump" or animation_name == "Idle":
-		$AudioStreamPlayer.stop()
+		$Walk.stop()
 	elif animation_name == "Walk":
-		if !$AudioStreamPlayer.playing:
-			$AudioStreamPlayer.play()
+		if !$Walk.playing:
+			$Walk.play()
 
 	var snap = Vector2.DOWN * 32 if !can_jump else Vector2.ZERO
 
@@ -58,31 +57,46 @@ func _physics_process(_delta):
 	velocity = move_and_slide_with_snap(velocity, snap, FLOOR)
 
 	if !heldPackets.empty():
+		$ThrowGuide.visible = true
+		if $ThrowGuide.rotation_degrees == 70:
+			#$ThrowGuide.rotate($ThrowGuide.rotation + MATH.PI)
+			pass
 		for packet in heldPackets:
 			packet.linear_velocity = Vector2.ZERO
 			packet.sleeping = true
+	else:
+		$ThrowGuide.visible = false
 
 func pickupObject():
-	if localInteractable != null and Input.is_action_just_released("ui_accept"):
-		localInteractable.interact(self)
-		heldPackets.append(localInteractable)
+	if Input.is_action_just_released("ui_accept"):
+		if !localInteractables.empty():
+			var closest_item = localInteractables.front()
+			closest_item.interact(self)
+			heldPackets.append(closest_item)
 
 func throwObject():
 	if !heldPackets.empty() and Input.is_action_just_released("throw"):
-		var packet = heldPackets.pop_front()
+		var packet = heldPackets.pop_back()
 		self.remove_child(packet)
 		get_parent().add_child(packet)
 		packet.wake_up($PacketPoint.global_position)
-		packet.apply_central_impulse(Vector2(200, -100))
+		var force_vector = Vector2.ZERO
+		if $AnimatedSprite.flip_h == false:
+			force_vector = Vector2(150, -100)
+		else:
+			force_vector = Vector2(-150, -100)
+		packet.apply_central_impulse(force_vector)
 
 func _on_PickupArea_body_entered(body):
 	if body.is_in_group('Packets'):
-		if localInteractable != null:
-			localInteractable.unglow()
+		if !localInteractables.empty() and localInteractables.front() != null:
+			localInteractables.front().unglow()
 		body.glow()
-		localInteractable = body
+		localInteractables.push_front(body)
 
 func _on_PickupArea_body_exited(body):
-	if body == localInteractable and localInteractable != null:
-		localInteractable.unglow()
-	localInteractable = null
+	if body.is_in_group('Packets'):
+		body.unglow()
+		localInteractables.remove(localInteractables.find(body))
+		if !localInteractables.empty() and localInteractables.front() != null:
+			localInteractables.front().glow()

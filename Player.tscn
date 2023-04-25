@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player/Idle1.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://assets/player/Run1.png" type="Texture" id=4]
 [ext_resource path="res://assets/player/Run2.png" type="Texture" id=5]
 [ext_resource path="res://assets/audio/walk.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/jump.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/player/ThrowGuide.png" type="Texture" id=8]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -33,15 +35,17 @@ extents = Vector2( 25, 20 )
 
 [node name="Player" type="KinematicBody2D"]
 pause_mode = 2
+position = Vector2( 0, 1 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "Jump"
 offset = Vector2( 0, 0.5 )
+
+[node name="ThrowGuide" type="Sprite" parent="."]
+position = Vector2( 80, -33 )
+texture = ExtResource( 8 )
 
 [node name="PlayerCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 1.5 )
@@ -50,14 +54,18 @@ shape = SubResource( 1 )
 [node name="PickupArea" type="Area2D" parent="."]
 
 [node name="PickupCollision" type="CollisionShape2D" parent="PickupArea"]
-position = Vector2( 0, -7 )
 shape = SubResource( 3 )
 
 [node name="PacketPoint" type="Node2D" parent="."]
 position = Vector2( 0, -23 )
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="Walk" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
+volume_db = -20.0
+
+[node name="Jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -20.0
 
 [connection signal="body_entered" from="PickupArea" to="." method="_on_PickupArea_body_entered"]
 [connection signal="body_exited" from="PickupArea" to="." method="_on_PickupArea_body_exited"]

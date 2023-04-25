@@ -8,6 +8,7 @@
 extents = Vector2( 14.4, 15.4 )
 
 [node name="Packet" type="RigidBody2D" groups=["Packets"]]
+can_sleep = false
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
