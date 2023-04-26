@@ -1,13 +1,14 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/fonts/Alef-Regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://assets/level/HealthBar.png" type="Texture" id=2]
+[ext_resource path="res://UI.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
 font_data = ExtResource( 1 )
 
 [node name="UI" type="CanvasLayer"]
+script = ExtResource( 2 )
 
 [node name="Container" type="Control" parent="."]
 anchor_left = 0.5
@@ -20,9 +21,9 @@ margin_bottom = 73.0
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -69.0
-margin_top = 5.0
+margin_top = 4.0
 margin_right = 69.0
-margin_bottom = 39.0
+margin_bottom = 38.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "Latency"
@@ -30,31 +31,41 @@ align = 1
 valign = 1
 uppercase = true
 
-[node name="Control" type="Control" parent="Container"]
+[node name="LatencyText2" type="Label" parent="Container"]
 anchor_left = 0.5
-anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -78.5
-margin_top = -31.0
-margin_right = 78.5
+margin_left = 42.5
+margin_top = 25.0
+margin_right = 57.5
+margin_bottom = 59.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+valign = 1
+uppercase = true
 
-[node name="TextureRect" type="TextureRect" parent="Container/Control"]
-modulate = Color( 1, 0, 0, 1 )
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -64.0
-margin_top = -20.0
-margin_bottom = 20.0
-texture = ExtResource( 2 )
+[node name="LatencyText3" type="Label" parent="Container"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -57.5
+margin_top = 25.0
+margin_right = -42.5
+margin_bottom = 59.0
+custom_colors/font_color = Color( 0, 1, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+valign = 1
+uppercase = true
 
-[node name="TextureRect2" type="TextureRect" parent="Container/Control"]
-modulate = Color( 0, 1, 0, 1 )
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_top = -20.0
-margin_right = 64.0
-margin_bottom = 20.0
-texture = ExtResource( 2 )
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.75
+autostart = true
+
+[node name="GameOverTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="GameOverTimer" to="." method="_on_GameOverTimer_timeout"]

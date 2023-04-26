@@ -1,6 +1,7 @@
 extends Node
 
 func _ready():
-	var scaling = get_viewport().size / $Box/Viewport.size
+	pass
+	#var scaling = get_viewport().size / $Box/Viewport.size
 	#$Box.rect_scale = scaling
-	print($Box.rect_scale)
+	#print($Box.rect_scale)

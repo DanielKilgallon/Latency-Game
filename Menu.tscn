@@ -1,0 +1,168 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/fonts/Alef-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://PacketSpawner.tscn" type="PackedScene" id=2]
+[ext_resource path="res://DeathBox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Menu.gd" type="Script" id=4]
+[ext_resource path="res://assets/audio/BackgroundMusic.mp3" type="AudioStream" id=5]
+
+[sub_resource type="DynamicFont" id=2]
+size = 64
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 1 )
+
+[node name="Menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -383.0
+margin_right = 383.0
+margin_bottom = 398.0
+custom_fonts/font = SubResource( 2 )
+text = "Latency"
+align = 1
+
+[node name="Credits" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -400.0
+margin_top = -80.0
+margin_right = 400.0
+margin_bottom = -35.0
+custom_fonts/font = SubResource( 3 )
+text = "by Slickle"
+align = 1
+
+[node name="PlayText" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -400.0
+margin_top = -61.5
+margin_right = 400.0
+margin_bottom = -16.5
+custom_fonts/font = SubResource( 3 )
+text = "Play"
+align = 1
+
+[node name="Sound" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -181.0
+margin_bottom = -158.0
+custom_fonts/font = SubResource( 1 )
+text = "Sound Level"
+align = 1
+
+[node name="PlayButton1" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = -15.0
+margin_right = -12.0
+margin_bottom = 5.0
+
+[node name="PlayButton2" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 12.0
+margin_top = -15.0
+margin_right = 64.0
+margin_bottom = 5.0
+
+[node name="Play1" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -256.0
+margin_right = -38.0
+margin_bottom = -233.0
+custom_fonts/font = SubResource( 1 )
+text = "Easy"
+align = 1
+
+[node name="Play2" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 38.0
+margin_top = -256.0
+margin_right = 38.0
+margin_bottom = -233.0
+custom_fonts/font = SubResource( 1 )
+text = "Hard"
+align = 1
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="PacketSpawner" parent="Node2D" instance=ExtResource( 2 )]
+position = Vector2( 200, -80 )
+num_ports = 2
+timer_increase_ratio = 0.01
+timer_start_time = 0.73
+play_audio = false
+
+[node name="PacketSpawner4" parent="Node2D" instance=ExtResource( 2 )]
+position = Vector2( 600, -80 )
+num_ports = 2
+timer_increase_ratio = 0.01
+timer_start_time = 0.67
+play_audio = false
+
+[node name="DeathBox" parent="Node2D" instance=ExtResource( 3 )]
+position = Vector2( 407, 688 )
+scale = Vector2( 50, 1 )
+
+[node name="DeathBox2" parent="Node2D" instance=ExtResource( 3 )]
+position = Vector2( 402, -241 )
+scale = Vector2( 50, 1 )
+
+[node name="DeathBox3" parent="Node2D" instance=ExtResource( 3 )]
+position = Vector2( 894, 218 )
+scale = Vector2( 1, 50 )
+
+[node name="DeathBox4" parent="Node2D" instance=ExtResource( 3 )]
+position = Vector2( -82, 218 )
+scale = Vector2( 1, 50 )
+
+[node name="HSlider" type="HSlider" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = 81.0
+margin_right = 50.0
+margin_bottom = 97.0
+min_value = -30.0
+max_value = 0.0
+tick_count = 100
+ticks_on_borders = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -5.0
+autoplay = true
+
+[connection signal="pressed" from="PlayButton1" to="." method="_on_PlayButton1_pressed"]
+[connection signal="pressed" from="PlayButton2" to="." method="_on_PlayButton2_pressed"]
+[connection signal="value_changed" from="HSlider" to="." method="_on_HSlider_value_changed"]

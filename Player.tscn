@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player/Idle1.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/audio/walk.wav" type="AudioStream" id=6]
 [ext_resource path="res://assets/audio/jump.wav" type="AudioStream" id=7]
 [ext_resource path="res://assets/player/ThrowGuide.png" type="Texture" id=8]
+[ext_resource path="res://assets/audio/packetHit.wav" type="AudioStream" id=9]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -44,6 +45,7 @@ animation = "Jump"
 offset = Vector2( 0, 0.5 )
 
 [node name="ThrowGuide" type="Sprite" parent="."]
+visible = false
 position = Vector2( 80, -33 )
 texture = ExtResource( 8 )
 
@@ -61,11 +63,15 @@ position = Vector2( 0, -23 )
 
 [node name="Walk" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
-volume_db = -20.0
+volume_db = -10.0
 
 [node name="Jump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
-volume_db = -20.0
+volume_db = -10.0
+
+[node name="Interact" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -10.0
 
 [connection signal="body_entered" from="PickupArea" to="." method="_on_PickupArea_body_entered"]
 [connection signal="body_exited" from="PickupArea" to="." method="_on_PickupArea_body_exited"]

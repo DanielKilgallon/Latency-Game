@@ -11,9 +11,21 @@ var rotated: bool = false
 var localInteractables = []
 var heldPackets = []
 
+var packetExplosion = preload("res://PacketExplosion.tscn")
+
 func _input(_event):
+	restart()
+	backToMenu()
 	pickupObject()
 	throwObject()
+
+func explode():
+	var explosion = packetExplosion.instance()
+	explosion.position = self.position
+	explosion.play("default")
+	explosion.play_sound = true
+	get_parent().add_child(explosion)
+	queue_free()
 
 func _physics_process(_delta):
 	velocity.x = 0
@@ -62,14 +74,26 @@ func _physics_process(_delta):
 			#$ThrowGuide.rotate($ThrowGuide.rotation + MATH.PI)
 			pass
 		for packet in heldPackets:
-			packet.linear_velocity = Vector2.ZERO
-			packet.sleeping = true
+			if !is_instance_valid(packet):
+				heldPackets.erase(packet)
+			else:
+				packet.linear_velocity = Vector2.ZERO
+				packet.sleeping = true
 	else:
 		$ThrowGuide.visible = false
+
+func restart():
+	if Input.is_action_just_released("ui_home"):
+		get_tree().reload_current_scene()
+
+func backToMenu():
+	if Input.is_action_just_released("ui_cancel"):
+		get_tree().change_scene("res://Menu.tscn")
 
 func pickupObject():
 	if Input.is_action_just_released("ui_accept"):
 		if !localInteractables.empty():
+			$Interact.play()
 			var closest_item = localInteractables.front()
 			closest_item.interact(self)
 			heldPackets.append(closest_item)
@@ -77,15 +101,16 @@ func pickupObject():
 func throwObject():
 	if !heldPackets.empty() and Input.is_action_just_released("throw"):
 		var packet = heldPackets.pop_back()
-		self.remove_child(packet)
-		get_parent().add_child(packet)
-		packet.wake_up($PacketPoint.global_position)
-		var force_vector = Vector2.ZERO
-		if $AnimatedSprite.flip_h == false:
-			force_vector = Vector2(150, -100)
-		else:
-			force_vector = Vector2(-150, -100)
-		packet.apply_central_impulse(force_vector)
+		if self.is_a_parent_of(packet):
+			self.remove_child(packet)
+			get_parent().add_child(packet)
+			packet.wake_up($PacketPoint.global_position)
+			var force_vector = Vector2.ZERO
+			if $AnimatedSprite.flip_h == false:
+				force_vector = Vector2(150, -100)
+			else:
+				force_vector = Vector2(-150, -100)
+			packet.apply_central_impulse(force_vector)
 
 func _on_PickupArea_body_entered(body):
 	if body.is_in_group('Packets'):

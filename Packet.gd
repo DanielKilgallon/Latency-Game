@@ -1,8 +1,10 @@
 extends RigidBody2D
 
 var packet_type: int
-var packet_latency: int
-var color_arr = [Color.red, Color.green, Color.yellow]
+var packet_latency: float
+var color_arr = [Color.red, Color.green]
+
+var packetExplosion = preload("res://PacketExplosion.tscn")
 
 func _ready():
 	randomize()
@@ -12,7 +14,13 @@ func _ready():
 func _process(_delta):
 	$Label.text = str(packet_latency)
 
-func destroy():
+func destroy(sad_destroy = false):
+	var explosion = packetExplosion.instance()
+	explosion.modulate = $Sprite.modulate
+	explosion.position = self.position
+	explosion.play("default")
+	explosion.play_sound = sad_destroy
+	get_parent().add_child(explosion)
 	queue_free()
 
 func glow():
@@ -35,4 +43,6 @@ func wake_up(start_position):
 	self.position = start_position
 
 func _on_Timer_timeout():
-	packet_latency = packet_latency + 1
+	packet_latency = packet_latency + .1
+	if int(packet_latency) >= 30:
+		destroy(true)

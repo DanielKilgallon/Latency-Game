@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Airship Serenity.mp3-7a9bfc849d74ba1909c15195f30cd3d2.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Airship Serenity.mp3"
+dest_files=[ "res://.import/Airship Serenity.mp3-7a9bfc849d74ba1909c15195f30cd3d2.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
