@@ -11,7 +11,7 @@ var rotated: bool = false
 var localInteractables = []
 var heldPackets = []
 
-var packetExplosion = preload("res://PacketExplosion.tscn")
+var packetExplosion = preload("res://entities/PacketExplosion.tscn")
 
 func _input(_event):
 	restart()

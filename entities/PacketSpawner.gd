@@ -1,7 +1,7 @@
 extends Node2D
 
 
-const PACKET = preload("res://Packet.tscn")
+const PACKET = preload("res://entities/Packet.tscn")
 export var num_ports = 1
 export var timer_increase_ratio = .1
 export var timer_start_time: float = 5

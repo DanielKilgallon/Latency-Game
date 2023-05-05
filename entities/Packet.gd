@@ -4,7 +4,7 @@ var packet_type: int
 var packet_latency: float
 var color_arr = [Color.red, Color.green]
 
-var packetExplosion = preload("res://PacketExplosion.tscn")
+var packetExplosion = preload("res://entities/PacketExplosion.tscn")
 
 func _ready():
 	randomize()

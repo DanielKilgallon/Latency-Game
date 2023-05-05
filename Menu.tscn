@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/fonts/Alef-Regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://PacketSpawner.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/PacketSpawner.tscn" type="PackedScene" id=2]
 [ext_resource path="res://DeathBox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Menu.gd" type="Script" id=4]
 [ext_resource path="res://assets/audio/BackgroundMusic.mp3" type="AudioStream" id=5]
